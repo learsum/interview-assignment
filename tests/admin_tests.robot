@@ -18,18 +18,18 @@ Admin Can Delete Inactive Pets
     # Step 2: Add a pet with "sold" status (inactive) to the database
     Log    STEP 2: Adding pet with 'sold' status to database    level=INFO
     ${add_response}    Add New Pet    ${pet_id}    ${pet_name}    sold    cat
-    Log    Added inactive pet: ${add_response}    level=INFO
     Should Be Equal As Strings    ${add_response}[status]    sold
     Log    ✓ Inactive pet added successfully    level=INFO
     
     # Give API time to process
     Log    Waiting for API to process the new pet...    level=INFO
-    Sleep    3s
+    Sleep    5s
     
     # Step 3: Get list of all inactive pets
     Log    STEP 3: Retrieving all inactive pets    level=INFO
     ${sold_pets}    Get Pets By Status    sold
-    Log    Number of inactive pets before deletion: ${sold_pets.__len__()}    level=INFO
+    ${count}=    Get Length    ${sold_pets}
+    Log    Found ${count} inactive pets    level=INFO
     
     # Step 4: Verify if our inactive pet is on the list
     Log    STEP 4: Verifying our inactive pet is on the list    level=INFO

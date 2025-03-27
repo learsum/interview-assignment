@@ -59,12 +59,12 @@ Customer Can Add New Pet And Check Availability
     END
     
     Should Be True    ${found}    Our pet ID ${pet_id} was not found among available pets
-    Log    ✓ Pet was found in the available pets list    level=INFO
+    Log    Pet was found in the available pets list    level=INFO
     
     # Step 5: Delete pet and verify
     Log    STEP 5: Deleting pet    level=INFO
     ${deletion_successful}=    Delete Pet And Verify    ${pet_id}    max_attempts=5    delay=5s
     Should Be True    ${deletion_successful}    Failed to delete pet ID ${pet_id} after multiple attempts
-    Log    ✓ Pet deleted successfully    level=INFO
+    Log    Pet deleted successfully    level=INFO
     
     Log    ----- TEST COMPLETED SUCCESSFULLY -----    level=INFO 
