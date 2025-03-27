@@ -9,13 +9,11 @@ Customer Can Add New Pet And Check Availability
     
     Log    ----- TEST STARTED: Customer Can Add New Pet And Check Availability -----    level=INFO
     
-    # Step 1: Generate test data
     Log    STEP 1: Generating test data    level=INFO
     ${pet_id}    Generate Random ID
     ${pet_name}    Set Variable    Rex${pet_id}
     Log    Using pet ID: ${pet_id} and name: ${pet_name}    level=INFO
     
-    # Step 2: Add new pet to store
     Log    STEP 2: Adding new pet to store    level=INFO
     ${add_response}    Add New Pet    ${pet_id}    ${pet_name}    available    dog
     Log    Pet addition response: ${add_response}    level=DEBUG
@@ -24,16 +22,13 @@ Customer Can Add New Pet And Check Availability
     Should Be Equal As Strings    ${add_response}[status]    available
     Log    Pet added successfully    level=INFO
     
-    # Give API time to process
     Log    Waiting for API to process the new pet...    level=INFO
     Sleep    3s
     
-    # Step 3: Verify pet is retrievable directly
     Log    STEP 3: Verifying pet can be retrieved directly by ID    level=INFO
     ${response}    Try Get Pet By ID    ${pet_id}    expected_status=any
     ${status_code}=    Set Variable    ${response.status_code}
     
-    # Check response status and handle accordingly
     IF    ${status_code} == 200
         Log    Pet retrieval successful with status 200    level=INFO
         Verify Pet Details    ${response.json()}    ${pet_name}    available
@@ -42,7 +37,6 @@ Customer Can Add New Pet And Check Availability
         Log    Response body: ${response.text}    level=WARN
     END
     
-    # Step 4: Find pet in available list
     Log    STEP 4: Verifying pet appears in available pets list    level=INFO
     ${pets_available}    Get Pets By Status    available
     Log    Found ${pets_available.__len__()} available pets    level=INFO
@@ -61,7 +55,6 @@ Customer Can Add New Pet And Check Availability
     Should Be True    ${found}    Our pet ID ${pet_id} was not found among available pets
     Log    Pet was found in the available pets list    level=INFO
     
-    # Step 5: Delete pet and verify
     Log    STEP 5: Deleting pet    level=INFO
     ${deletion_successful}=    Delete Pet And Verify    ${pet_id}    max_attempts=5    delay=5s
     Should Be True    ${deletion_successful}    Failed to delete pet ID ${pet_id} after multiple attempts
